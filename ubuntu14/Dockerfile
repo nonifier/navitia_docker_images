@@ -1,26 +1,24 @@
+# WARNING: DEPRECATED
 # WARNING: This Dockerfile only works on KISIO platforms (because of the protobuf packages dependency)
 
-FROM debian:7
+FROM ubuntu:14.04
 
 # use UTC as localtime
 RUN rm -f /etc/localtime && ln -s /usr/share/zoneinfo/Europe/Paris /etc/localtime
 
-RUN echo "deb http://apt.canaltp.local/debian/repositories wheezy-internal main" > /etc/apt/sources.list.d/canaltp.list
+RUN echo "deb http://apt.canaltp.local/ubuntu trusty-dev main" > /etc/apt/sources.list.d/canaltp.list
 
 RUN apt-get update && \
 	apt-get install -y python-pip \
 		git \
 		postgresql-server-dev-all \
 		python-dev \
-		libzmq-dev \
-		debhelper \
+		libzmq-dev debhelper \
 		build-essential \
 		cmake \
 		gcc \
 		g++ \
-		autotools-dev \
-		libicu-dev \
-		libbz2-dev \
+		libboost-all-dev \
 		liblog4cplus-1.0-4 \
 		liblog4cplus-dev \
 		libgoogle-perftools4 \
@@ -35,14 +33,9 @@ RUN apt-get update && \
 		libpqxx3-dev \
 		rabbitmq-server \
 		libgeos-c1 \
-		vim \
-		wget && \
+		vim && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-
-RUN wget "http://lmde-mirror.gwendallebihan.net/latest/pool/main/b/binutils/binutils_2.22-8_amd64.deb" && \
-	dpkg -i binutils_2.22-8_amd64.deb && \
-	rm -f binutils_2.22-8_amd64.deb
 
 # Navitia depends on boost >= 1.55
 RUN mkdir custom_boost && \
@@ -55,8 +48,6 @@ RUN mkdir custom_boost && \
 	cd / && \
 	rm -rf /custom_boost
 
-RUN echo "/usr/lib" >> /etc/ld.so.conf
-
 RUN pip install pip virtualenv -U
 # install dependancies for libc
 RUN pip install ujson==1.33 numpy==1.9
@@ -64,9 +55,5 @@ RUN pip install ujson==1.33 numpy==1.9
 # add user and group jenkins, with specific userid and groupid, never fail
 RUN groupadd -g 115 jenkins; exit 0
 RUN useradd -u 109 -g 115 jenkins | chpasswd; exit 0
-
-RUN mkdir /home/jenkins
-RUN chmod 755 /home/jenkins
-RUN chown 109:115 /home/jenkins
 
 CMD ["/usr/sbin/rabbitmq-server"]
