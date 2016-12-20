@@ -1,3 +1,5 @@
+# WARNING: This Dockerfile only works on KISIO platforms (because of the protobuf packages dependency)
+
 FROM debian:7
 
 # use UTC as localtime
