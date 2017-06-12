@@ -3,7 +3,9 @@ FROM debian:8
 # use UTC as localtime
 RUN rm -f /etc/localtime && ln -s /usr/share/zoneinfo/Europe/Paris /etc/localtime
 
-RUN apt-get update &&
+RUN echo "deb http://apt.canaltp.local/debian/repositories jessie-dev main" > /etc/apt/sources.list.d/canaltp.list
+
+RUN apt-get update && \
 	apt-get install -y python-pip \
 		git \
 		postgresql-server-dev-all \
@@ -16,20 +18,19 @@ RUN apt-get update &&
 		g++ \
 		libboost-all-dev \
 		liblog4cplus-1.0-4 \
-		liblog4cplus-dev \
-		libgoogle-perftools4 \
-		libgoogle-perftools-dev && \
-	apt-get install -y --force-yes libprotobuf9 \
+		liblog4cplus-dev && \
+	apt-get install -y --force-yes \
 		libprotobuf-dev \
-		libprotoc9 \
 		protobuf-compiler \
 		libproj0 \
 		libproj-dev \
-		libosmpbf-dev \
 		libpqxx3-dev \
 		rabbitmq-server \
 		libgeos-c1 \
+		libgoogle-perftools4 \
+		libgoogle-perftools-dev \
 		vim && \
+        apt-get -y --force-yes -t jessie-dev install libosmpbf-dev && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
