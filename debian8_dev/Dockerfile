@@ -30,7 +30,7 @@ RUN apt-get update && \
 		libgoogle-perftools4 \
 		libgoogle-perftools-dev \
 		vim && \
-        apt-get -y --force-yes -t jessie-dev install libosmpbf-dev && \
+        apt-get -y --force-yes -t jessie-dev install libosmpbf-dev python-protobuf && \
 	apt-get clean && \
 	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
