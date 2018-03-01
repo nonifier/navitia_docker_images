@@ -29,7 +29,9 @@ RUN apt-get update && \
 		libgeos-c1 \
 		libgoogle-perftools4 \
 		libgoogle-perftools-dev \
-		vim 
+		vim && \
+	apt-get clean && \
+	rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 # Add address of the canaltp.local apt server
 RUN echo "nameserver 10.50.83.15" > /etc/resolv.conf \
@@ -39,12 +41,12 @@ RUN echo "nameserver 10.50.83.15" > /etc/resolv.conf \
 		&& wget --output-document=- http://apt.canaltp.local/debian/repositories/canaltp.gpg.key | apt-key add - \
 		&& apt-get -y --force-yes -t jessie-dev install libosmpbf-dev python-protobuf \
 		&& apt-get clean \
-		&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+		&& rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/* 
 
-	
-RUN pip install pip virtualenv -U
-# install dependancies for libc
-RUN pip install ujson==1.33 numpy==1.9
+RUN pip install pip virtualenv -U && \
+	# install dependancies for libc
+	pip install ujson==1.33 numpy==1.9 && \
+	rm -rf /tmp/* /var/tmp/* ~/.cache/pip/*
 
 # add user and group jenkins, with specific userid and groupid, never fail
 RUN groupadd -g 115 jenkins; exit 0
