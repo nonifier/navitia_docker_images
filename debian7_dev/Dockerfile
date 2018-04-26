@@ -59,7 +59,7 @@ RUN echo "/usr/lib" >> /etc/ld.so.conf
 
 RUN pip install pip virtualenv -U
 # install dependancies for libc
-RUN pip install ujson==1.33 numpy==1.9
+RUN pip install ujson==1.35 numpy==1.9
 
 # add user and group jenkins, with specific userid and groupid, never fail
 RUN groupadd -g 115 jenkins; exit 0
