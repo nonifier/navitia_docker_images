@@ -50,6 +50,7 @@ RUN pip install pip virtualenv -U && \
 
 # add user and group jenkins, with specific userid and groupid, never fail
 RUN groupadd -g 115 jenkins; exit 0
-RUN useradd -u 109 -g 115 -g 0 -g 999 jenkins | chpasswd; exit 0
+RUN groupadd docker; exit 0
+RUN useradd -u 109 -g 115 -g docker jenkins | chpasswd; exit 0
 
 CMD ["/usr/sbin/rabbitmq-server"]
